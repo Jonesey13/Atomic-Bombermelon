@@ -94,8 +94,10 @@ function GM:SetupSpawnZone(zone)
 	local height = math.floor(size.y / jab / 2)
 	local max = math.Round(math.sqrt(area))
 	print("Max width and height " .. max)
-	width = math.min(width, max)
-	height = math.min(height, max)
+	
+	// Atomic Bomberman Level
+	width = 7
+	height = 5
 
 	zone.grid = ClassGrid(jab, width, height, width, height)
 	local generator = ClassGenerator(zone.grid, mins, maxs, width * 2, height * 2)

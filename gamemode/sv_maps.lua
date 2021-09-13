@@ -1,5 +1,6 @@
 
 include("sv_mapvote.lua")
+include("sv_mapload.lua")
 
 MapTypes = {}
 
@@ -111,11 +112,19 @@ local function loadMaps(rootFolder)
 			-- grid:print()
 		end
 	end
+
+	local files, dirs = file.Find(rootFolder .. "*.json", "LUA")
+	for k, mapFile in ipairs(files) do
+		loadAtomicMap(MapTypes, mapFile)
+		local path = "materials/melonbomber/maptypes/" .. mapFile .. ".png"
+		if file.Exists(path, "GAME") then
+			resource.AddSingleFile(path)
+		end
+	end
 end
 
 function GM:LoadMaps()
 	loadMaps((GM or GAMEMODE).Folder:sub(11) .. "/gamemode/maptypes/")
-	loadMaps("melonbomber/maptypes/")
 end
 
 GM:LoadMaps()
