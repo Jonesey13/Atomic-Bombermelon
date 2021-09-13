@@ -254,10 +254,7 @@ function GM:PlayerSelectSpawn( ply )
 	if pos then
 		self:ClearBoxesAroundSquare(zone, sq.x, sq.y)
 		ply:SetPos(pos)
-	else
-		self:PlayerSelectSpawnOld(ply)
 	end
-	
 end
 
 

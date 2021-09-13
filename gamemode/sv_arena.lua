@@ -523,7 +523,7 @@ function GM:PlaceLineBomb(ply, zone, x, y, dir)
 end
 
 
-function GM:ArenaFindPlayerSpawn(ply)
+function GM.ArenaFindPlayerSpawn(self, ply)
 	local has = {}
 	for k, ent in pairs(ents.FindByClass("spawn_zone")) do
 		if ent.walkable then
@@ -536,17 +536,18 @@ function GM:ArenaFindPlayerSpawn(ply)
 
 	local zone = has[math.random(#has)]
 	local jab = zone.walkable.sqsize
-
-	local sq = table.Random(zone.walkable.squares)
+	local position = table.Random(self.CurrentMapType.startPositions).pos
+	local x = position[1] - zone.grid.sizeLeft
+	local y = position[2] - zone.grid.sizeDown
 	-- local sq = {x = math.random(-zone.width, zone.width - 1), y = math.random(-zone.height, zone.height - 1)}
 
 	local mins, maxs = zone:OBBMins(), zone:OBBMaxs()
 	local center = (mins + maxs) / 2
 
-	local pos = center + Vector(jab, 0, 0) * sq.x  + Vector(0, jab, 0) * sq.y
+	local pos = center + Vector(jab, 0, 0) * x  + Vector(0, jab, 0) * y
 	pos.z = mins.z + 4
 
-	return pos, zone, sq
+	return pos, zone, {x = x, y = y}
 
 end
 

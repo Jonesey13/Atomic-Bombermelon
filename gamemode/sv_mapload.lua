@@ -8,6 +8,8 @@ function loadAtomicMap(mapTypes, fileName)
     map.description = jsonFile.name
     map.key = map.name
 
+    map.startPositions = jsonFile.start_positions
+
     function map:generateMap(grid)
         for x = 1, grid.maxx - grid.minx + 1 do
             for y = 1, grid.maxy - grid.miny + 1 do

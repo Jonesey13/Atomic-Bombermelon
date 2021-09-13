@@ -102,7 +102,7 @@ function GM:SetupSpawnZone(zone)
 	zone.grid = ClassGrid(jab, width, height, width, height)
 	local generator = ClassGenerator(zone.grid, mins, maxs, width * 2, height * 2)
 
-	generator:generate()
+	self.CurrentMapType = generator:generate()
 
 	zone.walkable = zone.grid:generateEmpty()
 end

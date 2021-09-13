@@ -174,6 +174,7 @@ function Gen:generate()
 		self:createWall(self.grid.sizeRight + 1, i, 2)
 	end
 
+	return maptype
 end
 
 // capture point

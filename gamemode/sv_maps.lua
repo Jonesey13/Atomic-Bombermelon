@@ -81,38 +81,6 @@ function SGrid:print()
 end
 
 local function loadMaps(rootFolder)
-	local files, dirs = file.Find(rootFolder .. "*.lua", "LUA")
-	for k, v in pairs(files) do
-
-		local tempG = {}
-		tempG.map = {}
-		setmetatable(tempG, meta)
-
-		local name = v:sub(1, -5)
-		local f = CompileFile(rootFolder .. v)
-		if !f then
-			MsgC(Color(255, 50, 10), "Loading map failed " .. name .. " from " .. rootFolder .. "\n")
-			continue
-		end
-		setfenv(f, tempG)
-		local b, err = pcall(f)
-
-		if !b then
-			MsgC(Color(255, 50, 10), "Loading map failed " .. name .. " from " .. rootFolder .. "\nError: " .. err .. "\n")
-		else
-			MsgC(Color(50, 255, 50), "Loaded map " .. name .. " from " .. rootFolder .. "\n")
-			tempG.map.key = name
-			MapTypes[name] = tempG.map
-			local path = "materials/melonbomber/maptypes/" .. name .. ".png"
-			if file.Exists(path, "GAME") then
-				resource.AddSingleFile(path)
-			end
-			-- local grid = MapMakerGrid(-10, -10, 10, 10)
-			-- tempG.MAP:GenerateMap(grid)
-			-- grid:print()
-		end
-	end
-
 	local files, dirs = file.Find(rootFolder .. "*.json", "LUA")
 	for k, mapFile in ipairs(files) do
 		loadAtomicMap(MapTypes, mapFile)
