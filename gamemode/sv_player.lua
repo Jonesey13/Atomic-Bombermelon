@@ -61,7 +61,7 @@ function GM:PlayerSpawn( ply )
 	hook.Call( "PlayerLoadout", GAMEMODE, ply )
 	hook.Call( "PlayerSetModel", GAMEMODE, ply )
 
-	ply:ResetUpgrades()
+	ply:ResetUpgrades(self.CurrentMapType)
 	ply:CalculateSpeed()
 
 	ply:SetHMaxHealth(100)
@@ -251,6 +251,7 @@ end
 function GM:PlayerSelectSpawn( ply )
 
 	local pos, zone, sq = self:ArenaFindPlayerSpawn(ply)
+	ply:ResetUpgrades(self.CurrentMapType)
 	if pos then
 		self:ClearBoxesAroundSquare(zone, sq.x, sq.y)
 		ply:SetPos(pos)

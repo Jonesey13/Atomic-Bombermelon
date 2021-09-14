@@ -1,10 +1,26 @@
 local PlayerMeta = FindMetaTable("Player")
 
-function PlayerMeta:ResetUpgrades()
-	self.MaxBombs = 1
-	self.RunningBoots = 1
-	self.PowerUps = 1
+local powerupIdMappingTable = {
+	Speed = 1,
+	Flame = 2,
+	Bomb = 3,
+	LineBomb = 6,
+	TriggerBomb = 7,
+	BombKick = 8
+}
+
+function PlayerMeta:ResetUpgrades(mapType)
+	self.MaxBombs = mapType.powerups.Bomb.bornwith + 1
+	self.RunningBoots = mapType.powerups.Speed.bornwith + 1
+	self.PowerUps = mapType.powerups.Flame.bornwith + 1
 	self.Upgrades = {}
+	
+	for k, powerup in pairs(mapType.powerups) do
+		if powerupIdMappingTable[k] != nil && powerup.bornwith >= 1 then
+			table.insert(self.Upgrades, powerupIdMappingTable[k])
+		end
+	end
+	
 	hook.Call("PlayerResetUpgrades", self)
 	self:NetworkUpgrades()
 end
@@ -29,7 +45,7 @@ function PlayerMeta:SetRunningBoots(amo)
 end
 
 function PlayerMeta:GetBombPower()
-	return self.PowerUps or 1
+	return (self.PowerUps or 1) + 1
 end
 
 function PlayerMeta:SetBombPower(amo)

@@ -596,7 +596,7 @@ function GM:ScatterPowerups(ply)
 				local pick = self:CreatePowerup(k, zone, sq.x, sq.y)
 			end
 		end
-		ply:ResetUpgrades()
+		ply:ResetUpgrades(self.CurrentMapType)
 	end
 end
 

@@ -10,6 +10,8 @@ function loadAtomicMap(mapTypes, fileName)
 
     map.startPositions = jsonFile.start_positions
 
+    map.powerups = jsonFile.powerups
+
     function map:generateMap(grid)
         for x = 1, grid.maxx - grid.minx + 1 do
             for y = 1, grid.maxy - grid.miny + 1 do
@@ -21,7 +23,7 @@ function loadAtomicMap(mapTypes, fileName)
                 elseif brickType == "Solid" then
                     grid:setWall(gridx, gridy)
                 end
-            end 
+            end
         end
     end
 
