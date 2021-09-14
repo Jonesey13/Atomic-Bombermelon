@@ -81,7 +81,7 @@ function SGrid:print()
 end
 
 local function loadMaps(rootFolder)
-	local files, dirs = file.Find(rootFolder .. "*.json", "LUA")
+	local files, dirs = file.Find(rootFolder .. "*.txt", "LUA")
 	for k, mapFile in ipairs(files) do
 		loadAtomicMap(MapTypes, mapFile)
 		local path = "materials/melonbomber/maptypes/" .. mapFile .. ".png"
