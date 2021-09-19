@@ -1,10 +1,10 @@
 "Gamemode"
 {
 	"base"		"base"
-	"title"		"Melonbomber"
+	"title"		"Atomic Bombermelon"
 	"maps"		"^mb_"
 	"menusystem"	"1"
-	"version" 	"1.3.3"
-	"workshopid"	"237537750"
+	"version" 	"1.0.0"
+	"workshopid"	"2602168674"
 	"entry_id"	"3"
 }

@@ -4,7 +4,7 @@ function loadAtomicMap(mapTypes, fileName)
     local jsonFile = util.JSONToTable(mapFile)
 
     map = {}
-    map.name = fileName:sub(1, -5)
+    map.name = fileName:sub(1, -5):upper()
     map.description = jsonFile.name
     map.key = map.name
 

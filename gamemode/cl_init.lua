@@ -81,21 +81,19 @@ function GM:CalcView(ply, pos, angles, fov)
 	if ply:IsPlayer() && !ply:Alive() then
 		ply = ply:GetRagdollEntity()
 	end
-	if IsValid(ply) then
-		if !self.FirstPerson:GetBool() || ply != LocalPlayer() then
-			local trace = {}
-			trace.start = ply:GetPos() + Vector(0, 0, 100)
-			trace.endpos = trace.start + Vector(0, 0, 300)
-			trace.filter = ply
-			-- trace.mask = MASK_SHOT
-			local tr = util.TraceLine(trace)
+	if IsValid(ply) && (!self.FirstPerson:GetBool() || ply != LocalPlayer()) then
+		local trace = {}
+		trace.start = ply:GetPos() + Vector(0, 0, 100)
+		trace.endpos = trace.start + Vector(0, 0, 300)
+		trace.filter = ply
+		-- trace.mask = MASK_SHOT
+		local tr = util.TraceLine(trace)
 
-			local view = {}
-			view.origin = tr.HitPos + Vector(0, 0, -5)
-			view.angles = Angle(90,90,0)
-			view.fov = fov
-			return view
-		end
+		local view = {}
+		view.origin = tr.HitPos + Vector(0, 0, -5)
+		view.angles = Angle(90,90,0)
+		view.fov = fov
+		return view
 	end
 end
 

@@ -18,7 +18,7 @@ end
 net.Receive("gamestate", function (len)
 	GAMEMODE.GameState = net.ReadUInt(32)
 	GAMEMODE.StateStart = net.ReadDouble()
-
+	GAMEMODE.RoundTime = net.ReadUInt(32)
 
 	if GAMEMODE.GameState == 0 then
 	elseif GAMEMODE.GameState == 1 then
@@ -32,7 +32,6 @@ net.Receive("gamestate", function (len)
 			GAMEMODE.StartSiren:ChangeVolume(0.5, 0)
 		end
 	elseif GAMEMODE.GameState == 2 then
-
 		// end siren on start round
 		if GAMEMODE.StartSiren then
 			GAMEMODE.StartSiren:FadeOut(0.3)

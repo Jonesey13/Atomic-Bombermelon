@@ -59,6 +59,10 @@ function GM:HUDPaint()
 end
 
 function GM:DrawGameHUD()
+	if self.GameState == 2 then
+		self:DrawRoundClock()
+	end
+	
 	if LocalPlayer():Alive() then
 		self:DrawUpgrades()
 	end
@@ -234,6 +238,17 @@ function GM:DrawUpgrade(name, amo, col, x, y)
 	draw.ShadowText(name, "RobotoHUD-10", x + w + h * 0.2, y + h * 0.65, col, 0, 1)
 end
 
+function GM:DrawRoundClock()
+	surface.SetFont("RobotoHUD-15")
+	local roundTimerText = "Time Left:"
+	local w, h = surface.GetTextSize(roundTimerText)
+	local x = 40
+	local y = 20
+	local timeLeft = math.max(0, math.ceil(self.RoundTime - self:GetStateRunningTime()))
+	draw.ShadowText(roundTimerText, "RobotoHUD-15", x, y, col, 0)
+	draw.ShadowText(timeLeft, "RobotoHUD-15", x + w + h * 0.2, y , col, 0)
+end
+
 GM.UpgradesNotif = {}
 
 function GM:DrawUpgrades()
@@ -244,6 +259,7 @@ function GM:DrawUpgrades()
 
 	local f15 = draw.GetFontHeight("RobotoHUD-15")
 	local f25 = draw.GetFontHeight("RobotoHUD-30") * 0.8
+	
 	self:DrawUpgrade("Bombs", self:GetMaxBombs(), Color(50,255,50), x, y)
 	self:DrawUpgrade("Speed", self:GetRunningBoots(), Color(0, 150, 255), x, y + f25 + 4)
 	self:DrawUpgrade("Power", self:GetBombPower(), Color(220,50,50), x, y + f25 * 2 + 4 * 2)

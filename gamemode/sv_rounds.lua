@@ -44,6 +44,7 @@ function GM:SetGameState(state)
 	net.Start("gamestate")
 	net.WriteUInt(self.GameState, 32)
 	net.WriteDouble(self.StateStart)
+	net.WriteUInt(self.DeathBlocksTime:GetInt(), 32)
 	net.Broadcast()
 end
 
