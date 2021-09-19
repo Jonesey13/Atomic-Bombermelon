@@ -83,3 +83,15 @@ function Grid:generateEmpty()
 
 	return empty
 end
+
+function Grid:generateBlank()
+	local empty = Grid(self.sqsize, self.sizeLeft, self.sizeUp, self.sizeRight, self.sizeDown)
+
+	for x = -self.sizeLeft, self.sizeRight do
+		for y = -self.sizeUp, self.sizeDown do
+			empty:setSquare(x, y, {x = x, y = y})
+		end
+	end
+
+	return empty
+end

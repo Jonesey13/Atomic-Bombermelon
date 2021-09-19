@@ -641,10 +641,12 @@ function GM:ArenaDeathBlockThink()
 				local ct = ChatText()
 				ct:Add("Death blocks have started, get to the center!", Color(170, 10, 10))
 				ct:SendAll()
+				local zone = ents.FindByClass("spawn_zone")[1]
+				self.Deathblocks = self:GenerateDefaultDeathBlockPattern(zone.grid)
 			end
 		else
 			if !self.DBTime || self.DBTime < CurTime() then
-				self.DBTime = CurTime() + 0.2
+				self.DBTime = CurTime() + 0.35
 				self:ArenaNextDeathBlock(ents.FindByClass("spawn_zone")[1])
 			end
 		end
@@ -652,74 +654,32 @@ function GM:ArenaDeathBlockThink()
 end
 
 function GM:ArenaNextDeathBlock(zone)
-	if !zone.NextDeathBlock then zone.NextDeathBlock = 0 end
-	if !zone.DeathBlockStage then zone.DeathBlockStage = 0 end
+	if !zone.NextDeathBlock then zone.NextDeathBlock = 1 end
+	
+	local deathblock = self.Deathblocks[zone.NextDeathBlock]
 
-	local dy = 0
-	local jx = 0
-	if zone.DeathBlockStage % 2 == 0 && zone.grid.sizeUp > 0 then
-		dy = -zone.grid.sizeUp
-		jx = -1
-	elseif zone.grid.sizeDown > 0 then
-		dy = zone.grid.sizeDown
-		jx = 1
-	else
-		if zone.DeathBlockLastLine then
-			self:EndRound(1)
-			return
-		else
-			dy = 0
-			jx = 0
-		end
-	end
+	if deathblock != nil then
+		local x, y = deathblock.x, deathblock.y
 
-	if zone.NextDeathBlock >= zone.grid:getWidth() then
-		for i = -zone.grid.sizeLeft - 1, zone.grid.sizeRight + 1 do
-			local x, y = i, dy + jx
-			local ent = zone.grid:getSquare(x, y)
-			if IsValid(ent) then
-				ent:Remove()
-			end
-		end
-		if jx == -1 then
-			zone.grid.sizeUp = zone.grid.sizeUp - 1
-		elseif jx == 1 then
-			zone.grid.sizeDown = zone.grid.sizeDown - 1
-		else
-
-		end
-		zone.DeathBlockStage = zone.DeathBlockStage + 1
-		zone.NextDeathBlock = 0
-		return
-	end
-
-	local x, y = -zone.grid.sizeLeft + zone.NextDeathBlock, dy
-	local ent = zone.grid:getSquare(x, y)
-	if IsValid(ent) then
-		ent:Remove()
-	end
-
-	if jx != 0 then
-		local x, y = -zone.grid.sizeLeft + zone.NextDeathBlock - 1, dy + jx
 		local ent = zone.grid:getSquare(x, y)
 		if IsValid(ent) then
 			ent:Remove()
 		end
-	end
 
-	local t = GAMEMODE:GetPlayersInGridPos(zone, x, y)
-	for k, ply in pairs(t) do
-		local dmg = DamageInfo()
-		dmg:SetDamageType(DMG_AIRBOAT)
-		dmg:SetDamage(1000)
-		ply:TakeDamageInfo(dmg)
-	end
+		local t = GAMEMODE:GetPlayersInGridPos(zone, x, y)
+		for k, ply in pairs(t) do
+			local dmg = DamageInfo()
+			dmg:SetDamageType(DMG_AIRBOAT)
+			dmg:SetDamage(1000)
+			ply:TakeDamageInfo(dmg)
+		end
 
-	local gen = ClassGenerator(zone.grid, zone:OBBMins(), zone:OBBMaxs(), 2, 2)
-	local ent = gen:createWall(x, y, 2)
-	if IsValid(ent) then
-		ent:EmitSound("physics/metal/metal_box_impact_soft" .. math.random(1, 3) .. ".wav")
-	end
+		local gen = ClassGenerator(zone.grid, zone:OBBMins(), zone:OBBMaxs(), 2, 2)
+		local ent = gen:createWall(x, y, 2)
+		if IsValid(ent) then
+			ent:EmitSound("physics/metal/metal_box_impact_soft" .. math.random(1, 3) .. ".wav")
+		end
 
-	zone.NextDeathBlock = zone.NextDeathBlock + 1
+		zone.NextDeathBlock = zone.NextDeathBlock + 1
+	end
 end
