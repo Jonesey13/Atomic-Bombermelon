@@ -11,6 +11,8 @@ for k, v in pairs(files) do
 end
 
 
+include("common/functional.lua")
+include("common/set.lua")
 include("shared.lua")
 include("sh_class.lua")
 include("sh_condef.lua")
@@ -34,7 +36,6 @@ include("sv_statistics.lua")
 include("sv_bot.lua")
 include("sv_maps.lua")
 include("sv_deathblocks.lua")
-
 
 util.AddNetworkString("clientIPE")
 util.AddNetworkString("mb_openhelpmenu")
@@ -70,6 +71,7 @@ function GM:InitPostEntityAndMapCleanup()
 	for k, ent in pairs(ents.FindByClass("spawn_zone")) do
 		self:SetupSpawnZone(ent)
 	end
+	self.UsedSpawnIndexes = Set.new({})
 	for k, ply in pairs(player.GetAll()) do
 		if ply:Alive() then
 			self:PlayerSelectSpawn(ply)

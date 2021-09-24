@@ -9,6 +9,8 @@ function loadAtomicMap(mapTypes, fileName)
     map.key = map.name
 
     map.startPositions = jsonFile.start_positions
+    local positionIndexes = tableMap(map.startPositions, function(k, _) return tostring(k) end )
+    map.positionIndexes = Set.new(positionIndexes)
 
     map.powerups = jsonFile.powerups
 

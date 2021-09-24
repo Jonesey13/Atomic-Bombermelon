@@ -525,6 +525,9 @@ end
 
 function GM.ArenaFindPlayerSpawn(self, ply)
 	local has = {}
+
+	if !self.UsedSpawnIndexes then self.UsedSpawnIndexes = Set.new({}) end
+ 
 	for k, ent in pairs(ents.FindByClass("spawn_zone")) do
 		if ent.walkable then
 			table.insert(has, ent)
@@ -536,10 +539,22 @@ function GM.ArenaFindPlayerSpawn(self, ply)
 
 	local zone = has[math.random(#has)]
 	local jab = zone.walkable.sqsize
-	local position = table.Random(self.CurrentMapType.startPositions).pos
+	local availableSpawns = Set.difference(self.CurrentMapType.positionIndexes, self.UsedSpawnIndexes)
+	local spawnCandidates = {}
+
+	if tableLength(availableSpawns) == 0 then
+		spawnCandidates = self.CurrentMapType.positionIndexes
+	else
+		spawnCandidates = availableSpawns
+	end
+	local _, positionIndex = table.Random(spawnCandidates)
+
+	local position = self.CurrentMapType.startPositions[tonumber(positionIndex)].pos
+
+	self.UsedSpawnIndexes[positionIndex] = true
+
 	local x = position[1] - zone.grid.sizeLeft
 	local y = position[2] - zone.grid.sizeDown
-	-- local sq = {x = math.random(-zone.width, zone.width - 1), y = math.random(-zone.height, zone.height - 1)}
 
 	local mins, maxs = zone:OBBMins(), zone:OBBMaxs()
 	local center = (mins + maxs) / 2
