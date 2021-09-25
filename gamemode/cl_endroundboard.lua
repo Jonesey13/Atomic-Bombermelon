@@ -413,6 +413,8 @@ function GM:CreateEndRoundMenu()
 			local roundTime = settings.NextRoundWait or 30
 			local time = math.max(0, roundTime - GAMEMODE:GetStateRunningTime())
 			draw.ShadowText("Next round in " .. math.ceil(time), "RobotoHUD-20", w - 4, 0, col, 2)
+		elseif GAMEMODE:GetGameState() == 4 then
+			draw.ShadowText("Winning map is " .. GAMEMODE.WinningMapString, "RobotoHUD-20", w - 4, 0, col, 2)
 		end
 	end
 
@@ -584,6 +586,10 @@ net.Receive("mb_mapvotes", function (len)
 	
 	GAMEMODE.MapVotes = mapVotes
 	GAMEMODE.MapVotesByMap = byMap
+end)
+
+net.Receive("mb_votewinner", function (len)
+	GAMEMODE.WinningMapString = net.ReadString()
 end)
 
 function GM:EndRoundAddChatText(...)

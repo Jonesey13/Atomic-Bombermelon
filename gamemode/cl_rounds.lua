@@ -38,7 +38,7 @@ net.Receive("gamestate", function (len)
 		end
 	end
 
-	if GAMEMODE.GameState != 2 then
+	if GAMEMODE.GameState == 0 or GAMEMODE.GameState == 1  then
 		GAMEMODE:CloseEndRoundMenu()
 	end
 end)

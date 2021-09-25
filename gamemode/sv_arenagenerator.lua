@@ -112,37 +112,7 @@ function Gen:createWall(x, y, t)
 end
 
 function Gen:generate()
-
-	local maptype = table.Random(MapTypes)
-	if GAMEMODE.MapVoting then
-		GAMEMODE.MapVoting = false
-		local votes = {}
-		for ply, map in pairs(GAMEMODE.MapVotes) do
-			if IsValid(ply) && ply:IsPlayer() then
-				votes[map] = (votes[map] or 0) + 1
-			end
-		end
-
-		local maxvotes = 0
-		for k, v in pairs(votes) do
-			if v > maxvotes then
-				maxvotes = v
-			end
-		end
-
-		local maps = {}
-		for k, v in pairs(votes) do
-			if v == maxvotes then
-				table.insert(maps, k)
-			end
-		end
-
-		if #maps > 0 then
-			maptype = table.Random(maps)
-			print("Map " .. maptype.key .. " selected with " .. maxvotes .. " votes")
-		end
-	end
-	print("New map is: " .. (maptype.name or "error"))
+	local maptype = GAMEMODE.CurrentMapType
 
 	local minx, miny = math.floor(-self.width / 2), math.floor(-self.height / 2)
 	local grid = MapMakerGrid(minx, miny, minx + self.width, miny + self.height)

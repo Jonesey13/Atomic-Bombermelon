@@ -15,6 +15,7 @@ team.SetUp(1, "Spectators", Color(150, 150, 150))
 // 1 STARTING ROUND
 // 2 PLAYING
 // 3 END GAME RESET TIME
+// 4 SHOW MAP VOTE WINNER
 
 function GM:GetGameState()
 	return self.GameState
@@ -166,6 +167,7 @@ function GM:EndRound(reason, winner)
 	self:NetworkMapList()
 
 	self.RoundSettings.NextRoundWait = 15
+	self.RoundSettings.ShowVoteWinnerTime = 5
 	self:NetworkGameSettings()
 
 	for k, ply in pairs(self:GetPlayingPlayers()) do
@@ -227,6 +229,11 @@ function GM:RoundsThink()
 		self:CheckForVictory()
 	elseif self:GetGameState() == 3 then
 		if self:GetStateRunningTime() > (self.RoundSettings.NextRoundWait or 30) then
+			self:DetermineVoteWinner()
+			self:SetGameState(4)
+		end
+	elseif self:GetGameState() == 4 then
+		if self:GetStateRunningTime() > (self.RoundSettings.ShowVoteWinnerTime or 30) then
 			self:SetupRound()
 		end
 	end
