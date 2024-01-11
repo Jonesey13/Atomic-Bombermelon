@@ -1,0 +1,13 @@
+{
+	"title" :	"Atomic Bombermelon",
+	"type"  :	"gamemode",
+	"tags"  :	[],
+	"ignore":
+	[
+		"*.cmd",
+		"*.ini",
+		"*.lnk",
+		"*.url",
+		"atomic_bombermelon.jpg"
+	]
+}
