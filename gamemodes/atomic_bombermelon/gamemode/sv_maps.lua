@@ -81,7 +81,7 @@ function SGrid:print()
 end
 
 local function loadMaps(rootFolder)
-	local files, dirs = file.Find(rootFolder .. "*.txt", "LUA")
+	local files, dirs = file.Find("atomic_bombermelon/maptypes/*.txt", "DATA")
 	for k, mapFile in ipairs(files) do
 		loadAtomicMap(MapTypes, mapFile)
 		local path = "materials/melonbomber/maptypes/" .. mapFile .. ".png"
@@ -92,7 +92,7 @@ local function loadMaps(rootFolder)
 end
 
 function GM:LoadMaps()
-	loadMaps((GM or GAMEMODE).Folder:sub(11) .. "/gamemode/maptypes/")
+	loadMaps()
 end
 
 GM:LoadMaps()
