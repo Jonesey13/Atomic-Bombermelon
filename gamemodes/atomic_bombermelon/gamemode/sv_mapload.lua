@@ -1,5 +1,5 @@
 function loadAtomicMap(mapTypes, fileName)
-    local mapFile = file.Read("atomic_bombermelon/maptypes/" .. fileName, "DATA")
+    local mapFile = file.Read("data_static/" .. fileName, "GAME")
 
     local jsonFile = util.JSONToTable(mapFile)
 
